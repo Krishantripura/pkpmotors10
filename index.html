@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PKP MOTOR10 | Buy & Sell Bikes & Scooties</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- 🔝 NAVBAR -->
+<header class="navbar">
+  <!-- Logo left -->
+  <div class="logo">
+    <span class="pkp">PKP</span>
+    <span class="motors">MOTORS</span><span class="ten">10</span>
+  </div>
+
+  <!-- Centered search bar -->
+  <div class="search-container">
+    <input type="text" placeholder="Search bikes or scooters..." />
+    <button><i class="fas fa-search"></i></button>
+  </div>
+
+  <!-- Navigation links -->
+  <nav id="navbar">
+    <!-- Links will be dynamically generated with JS -->
+  </nav>
+</header>
+
+
+
+<!-- Dynamic Navbar Script -->
+<script>
+const navbar = document.getElementById('navbar');
+const loggedIn = localStorage.getItem('loggedIn');
+const role = localStorage.getItem('role');
+
+function createLink(text, href) {
+  const a = document.createElement('a');
+  a.href = href;
+  a.textContent = text;
+  return a;
+}
+
+navbar.innerHTML = '';
+
+if(loggedIn && role==='user'){
+  navbar.appendChild(createLink('Home','index.html'));
+  navbar.appendChild(createLink('Buy','buy.html'));
+  navbar.appendChild(createLink('Sell','sell.html'));
+  navbar.appendChild(createLink('Profile','profile.html'));
+  const logout = createLink('Logout','#');
+  logout.addEventListener('click', ()=>{
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('role');
+    alert('Logged out!');
+    window.location.href='index.html';
+  });
+  navbar.appendChild(logout);
+
+} else if(loggedIn && role==='admin'){
+  navbar.appendChild(createLink('Admin Dashboard','admin.html'));
+  const logout = createLink('Logout','#');
+  logout.addEventListener('click', ()=>{
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('role');
+    alert('Logged out!');
+    window.location.href='login.html';
+  });
+  navbar.appendChild(logout);
+
+} else {
+  navbar.appendChild(createLink('Home','index.html'));
+  navbar.appendChild(createLink('Buy','buy.html'));
+  navbar.appendChild(createLink('Sell','sell.html'));
+  navbar.appendChild(createLink('Login','login.html'));
+}
+</script>
+
+<!-- 🎯 HERO SECTION -->
+<section class="hero">
+  <div class="overlay"></div>
+  <div class="hero-content">
+    <h1>Find Your Perfect Ride</h1>
+    <p>Buy or sell your dream bike or scooty with trusted sellers and instant listings.</p>
+    <div class="buttons">
+      <a href="#" class="btn primary">Explore Bikes</a>
+      <a href="C:\Users\krish\pkp10motors\sell.html" class="btn secondary">Sell Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- 🚀 FEATURES -->
+<section class="features">
+  <h2>Why Choose PKP MOTOR10?</h2>
+  <div class="feature-grid">
+    <div class="feature fade-in">
+      <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" alt="Trusted Sellers">
+      <h3>Trusted Sellers</h3>
+      <p>All listings are verified and checked for quality and safety.</p>
+    </div>
+    <div class="feature fade-in">
+      <img src="https://cdn-icons-png.flaticon.com/512/709/709496.png" alt="Smart Search">
+      <h3>Smart Search</h3>
+      <p>Filter by brand, price, and city to find your perfect two-wheeler.</p>
+    </div>
+    <div class="feature fade-in">
+      <img src="https://cdn-icons-png.flaticon.com/512/942/942748.png" alt="Secure Platform">
+      <h3>Secure Platform</h3>
+      <p>Built with Firebase Authentication and real-time security layers.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 🏍️ LATEST BIKES -->
+<section class="latest">
+  <h2>Latest Listings</h2>
+  <div class="bike-grid">
+    <div class="bike-card">
+      <img src="https://cdn.pixabay.com/photo/2018/03/14/09/08/motorcycle-3223103_1280.jpg" alt="Bike 1">
+      <h3>Royal Enfield Classic 350</h3>
+      <p>₹95,000 | Agartala</p>
+      <a href="#" class="btn small buy-now-btn">View Details</a>
+    </div>
+    <div class="bike-card">
+      <img src="https://cdn.pixabay.com/photo/2018/04/04/15/59/motorcycle-3296061_1280.jpg" alt="Bike 2">
+      <h3>Honda Activa 6G</h3>
+      <p>₹60,000 | Udaipur</p>
+      <a href="#" class="btn small buy-now-btn">View Details</a>
+    </div>
+    <div class="bike-card">
+      <img src="https://cdn.pixabay.com/photo/2018/06/12/08/17/motorbike-3474809_1280.jpg" alt="Bike 3">
+      <h3>Bajaj Pulsar 150</h3>
+      <p>₹70,000 | Dharmanagar</p>
+      <a href="#" class="btn small buy-now-btn">View Details</a>
+    </div>
+  </div>
+</section>
+
+<!-- 💬 PKP Smart Chatbot -->
+<div class="chatbot-widget" id="chatbot">
+  <div class="chatbot-header">
+    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712100.png" alt="Bot" />
+    <h3>PKP Smart Assistant</h3>
+    <button id="closeChat">✕</button>
+  </div>
+
+  <div class="chatbot-body" id="chatBody">
+    <div class="bot-message">🤖 Hi! Welcome to <b>PKP Motors10</b>!<br>How can I assist you today?</div>
+  </div>
+
+  <div class="chatbot-input">
+    <input type="text" id="userInput" placeholder="Type your message..." />
+    <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<!-- 🟣 Floating Chat Icon -->
+<div class="chat-toggle" id="chatToggle">
+  <i class="fas fa-comments"></i>
+</div>
+
+<!-- ⚙️ Chatbot Script -->
+<script>
+const chatToggle = document.getElementById('chatToggle');
+const chatbot = document.getElementById('chatbot');
+const closeChat = document.getElementById('closeChat');
+const sendBtn = document.getElementById('sendBtn');
+const userInput = document.getElementById('userInput');
+const chatBody = document.getElementById('chatBody');
+
+chatToggle.addEventListener('click', () => chatbot.classList.toggle('show'));
+closeChat.addEventListener('click', () => chatbot.classList.remove('show'));
+
+sendBtn.addEventListener('click', sendMessage);
+userInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') sendMessage();
+});
+
+function sendMessage() {
+  const msg = userInput.value.trim();
+  if (msg) {
+    const userMsg = document.createElement('div');
+    userMsg.classList.add('user-message');
+    userMsg.textContent = msg;
+    chatBody.appendChild(userMsg);
+    userInput.value = '';
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    setTimeout(() => {
+      const botMsg = document.createElement('div');
+      botMsg.classList.add('bot-message');
+      botMsg.textContent = "Got it! We'll assist you with that 🚗💨";
+      chatBody.appendChild(botMsg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }, 800);
+  }
+}
+</script>
+
+<!-- 🔐 BUY PAGE LOGIN CHECK SCRIPT -->
+<script>
+const isLoggedIn = localStorage.getItem("loggedIn");
+
+// For each Buy button
+document.querySelectorAll(".buy-now-btn").forEach(btn => {
+  btn.addEventListener("click", e => {
+    if (!isLoggedIn) {
+      e.preventDefault();
+      alert("Please login to continue with your purchase.");
+      window.location.href = "login.html";
+    } else {
+      window.location.href = "order.html";
+    }
+  });
+});
+</script>
+
+<!-- 📞 CONTACT -->
+<section class="contact">
+  <h2>Contact Us</h2>
+  <p>Got any questions or feedback? Reach us anytime.</p>
+  <a href="#" class="btn contact-btn">Contact Support</a>
+</section>
+
+<!-- ⚙️ FOOTER -->
+<footer>
+  <p>© 2025 PKP MOTOR10 — All Rights Reserved.</p>
+  <p>Made with ❤️ by <strong>Krishan Tripura</strong></p>
+</footer>
+
+</body>
+</html>
