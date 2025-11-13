@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | PKP MOTOR10</title>
+<style>
+body { font-family:'Poppins',sans-serif; background:#f4f4f4; margin:0; padding:0; }
+header { background:#1e1e2f; color:#fff; padding:20px; text-align:center; }
+h2 { margin:20px 0; color:#1e1e2f; }
+section { padding:20px 10%; }
+table { width:100%; border-collapse:collapse; margin-top:10px; }
+table, th, td { border:1px solid #ccc; }
+th, td { padding:10px; text-align:left; }
+th { background:#ffcc00; color:#1e1e2f; }
+.logout-btn { float:right; background:#ff0000; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; font-weight:600; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Admin Dashboard - PKP MOTOR10</h1>
+  <button class="logout-btn" id="logoutBtn">Logout</button>
+</header>
+
+<section>
+  <h2>Sell Details</h2>
+  <table id="sellTable">
+    <thead>
+      <tr>
+        <th>Username</th><th>Email</th><th>Phone</th><th>Bike/Scooty Model</th><th>Price</th><th>Location</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Order Details</h2>
+  <table id="orderTable">
+    <thead>
+      <tr>
+        <th>Username</th><th>Bike/Scooty Model</th><th>Price</th><th>Purchase Date</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<script>
+if(localStorage.getItem('role')!=='admin'){
+  alert('Access denied!');
+  window.location.href='login.html';
+}
+
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  localStorage.removeItem('loggedIn');
+  localStorage.removeItem('role');
+  alert('Logged out successfully!');
+  window.location.href='login.html';
+});
+
+const sellDetails = JSON.parse(localStorage.getItem('sellDetails')||'[]');
+const orderDetails = JSON.parse(localStorage.getItem('orderDetails')||'[]');
+
+const sellTableBody = document.getElementById('sellTable').querySelector('tbody');
+sellDetails.forEach(item=>{
+  const row=document.createElement('tr');
+  row.innerHTML=`<td>${item.username}</td><td>${item.email}</td><td>${item.phone}</td><td>${item.model}</td><td>${item.price}</td><td>${item.location}</td>`;
+  sellTableBody.appendChild(row);
+});
+
+const orderTableBody = document.getElementById('orderTable').querySelector('tbody');
+orderDetails.forEach(item=>{
+  const row=document.createElement('tr');
+  row.innerHTML=`<td>${item.username}</td><td>${item.model}</td><td>${item.price}</td><td>${item.date}</td>`;
+  orderTableBody.appendChild(row);
+});
+</script>
+
+</body>
+</html>

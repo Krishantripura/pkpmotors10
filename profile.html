@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile | PKP MOTOR10</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+body {
+  font-family:'Poppins',sans-serif;
+  margin:0;
+  padding:0;
+  background: #f5f6fa;
+  color: #333;
+}
+
+/* ===== NAVBAR ===== */
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 10%;
+  background:#1e1e2f;
+  color:#fff;
+}
+
+header a {
+  color:#fff;
+  text-decoration:none;
+  margin-left:20px;
+  font-weight:600;
+  transition:0.3s;
+}
+
+header a:hover {
+  color: #ffcc00;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* ===== PROFILE CONTAINER ===== */
+.container {
+  max-width:600px;
+  margin:60px auto;
+  background:#fff;
+  padding:40px 30px;
+  border-radius:15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  text-align:center;
+  position: relative;
+}
+
+.container::before {
+  content: "\f007";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 60px;
+  color: #ffcc00;
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e1e2f;
+  padding: 20px;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.container h2 {
+  margin-top: 50px;
+  font-size: 2rem;
+  color: #1e1e2f;
+}
+
+.profile-info {
+  margin-top:30px;
+  text-align:left;
+}
+
+.profile-info p {
+  display:flex;
+  align-items:center;
+  font-size:1rem;
+  padding:12px 0;
+  border-bottom:1px solid #eee;
+}
+
+.profile-info p i {
+  color:#ffcc00;
+  margin-right:15px;
+  min-width:25px;
+  text-align:center;
+}
+
+/* ===== LOGOUT & DELETE BUTTONS ===== */
+button {
+  display:inline-block;
+  margin-top:20px;
+  padding:10px 25px;
+  border:none;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.logout-btn { background:#ff4d4d; color:#fff; }
+.logout-btn:hover { background:#ff1a1a; }
+
+.delete-btn { background:#555; color:#fff; margin-left:10px; }
+.delete-btn:hover { background:#333; }
+
+/* ===== FEEDBACK ===== */
+.feedback-section {
+  margin-top:30px;
+  text-align:left;
+}
+
+.feedback-section h3 {
+  margin-bottom:10px;
+  color:#1e1e2f;
+}
+
+.feedback-section textarea {
+  width:100%;
+  padding:10px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  resize:none;
+  font-size:1rem;
+  min-height:80px;
+  margin-bottom:10px;
+}
+
+.feedback-section button {
+  background:#ffcc00;
+  color:#1e1e2f;
+}
+
+.feedback-section button:hover {
+  background:#ffd633;
+}
+
+@media(max-width:600px){
+  .container { margin:40px 20px; padding:30px 20px; }
+  .container::before { font-size:50px; padding:15px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">PKP MOTOR10</div>
+  <nav id="navbar"></nav>
+</header>
+
+<div class="container" id="profileContainer">
+  <h2>Your Profile</h2>
+  <div class="profile-info" id="profileInfo"></div>
+  
+  <div>
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+    <button class="delete-btn" id="deleteBtn">Request Account Deletion</button>
+  </div>
+
+  <div class="feedback-section">
+    <h3>Send Feedback</h3>
+    <textarea id="feedbackText" placeholder="Your feedback..."></textarea>
+    <button id="feedbackBtn">Submit Feedback</button>
+  </div>
+</div>
+
+<script>
+// Dynamic navbar
+const navbar = document.getElementById('navbar');
+const loggedIn = localStorage.getItem('loggedIn');
+const role = localStorage.getItem('role');
+
+function createLink(text, href){
+  const a = document.createElement('a');
+  a.href = href;
+  a.textContent = text;
+  return a;
+}
+
+navbar.innerHTML='';
+if(loggedIn && role==='user'){
+  navbar.appendChild(createLink('Home','index.html'));
+  navbar.appendChild(createLink('Buy','buy.html'));
+  navbar.appendChild(createLink('Sell','sell.html'));
+  navbar.appendChild(createLink('Profile','profile.html'));
+} else {
+  alert('Please login first!');
+  window.location.href='login.html';
+}
+
+// Populate profile info
+const user = JSON.parse(localStorage.getItem('userData')||'{}');
+const profileInfo = document.getElementById('profileInfo');
+profileInfo.innerHTML = `
+  <p><i class="fas fa-user"></i> <strong>Username:</strong> ${user.username || '-'}</p>
+  <p><i class="fas fa-envelope"></i> <strong>Email:</strong> ${user.email || '-'}</p>
+  <p><i class="fas fa-phone"></i> <strong>Phone:</strong> ${user.phone || '-'}</p>
+`;
+
+// Logout button
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  localStorage.removeItem('loggedIn');
+  localStorage.removeItem('role');
+  alert('Logged out!');
+  window.location.href='index.html';
+});
+
+// Request delete account
+document.getElementById('deleteBtn').addEventListener('click', ()=>{
+  const confirmDelete = confirm("Are you sure you want to request account deletion?");
+  if(confirmDelete){
+    const deleteRequests = JSON.parse(localStorage.getItem('deleteRequests') || '[]');
+    deleteRequests.push({ email: user.email, date: new Date().toLocaleString() });
+    localStorage.setItem('deleteRequests', JSON.stringify(deleteRequests));
+    alert("Your account deletion request has been submitted!");
+  }
+});
+
+// Submit feedback
+document.getElementById('feedbackBtn').addEventListener('click', ()=>{
+  const feedback = document.getElementById('feedbackText').value.trim();
+  if(feedback===''){
+    alert("Please enter feedback before submitting!");
+    return;
+  }
+  const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+  feedbacks.push({ email: user.email, feedback, date: new Date().toLocaleString() });
+  localStorage.setItem('feedbacks', JSON.stringify(feedbacks));
+  alert("Thank you for your feedback!");
+  document.getElementById('feedbackText').value='';
+});
+</script>
+
+</body>
+</html>

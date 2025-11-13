@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account | PKP MOTOR10</title>
+<style>
+body { font-family:'Poppins',sans-serif; background:#f4f4f4; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;}
+.container { background:#fff; padding:30px 40px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.2); width:350px; text-align:center; }
+input { width:90%; padding:10px; margin:10px 0; border-radius:6px; border:1px solid #ccc; }
+button { width:95%; padding:10px; margin-top:10px; border:none; border-radius:6px; background:#ffcc00; cursor:pointer; font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Create Account</h2>
+  <input type="text" id="newUser" placeholder="Username">
+  <input type="password" id="newPass" placeholder="Password">
+  <input type="email" id="newEmail" placeholder="Email">
+  <input type="text" id="newPhone" placeholder="Phone Number">
+  <button id="signupBtn">Create Account</button>
+</div>
+
+<script>
+document.getElementById('signupBtn').addEventListener('click', function(){
+  const username = document.getElementById('newUser').value;
+  const password = document.getElementById('newPass').value;
+  const email = document.getElementById('newEmail').value;
+  const phone = document.getElementById('newPhone').value;
+
+  if(!username || !password) return alert('Enter username and password!');
+  
+  localStorage.setItem('userData', JSON.stringify({username,password,email,phone}));
+  alert('Account created successfully!');
+  window.location.href = 'login.html';
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | PKP MOTOR10</title>
+<style>
+body { font-family:'Poppins',sans-serif; background:#f4f4f4; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;}
+.login-container { background:#fff; padding:30px 40px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.2); width:350px; text-align:center; }
+h2 { margin-bottom:20px; color:#1e1e2f; }
+input { width:90%; padding:10px; margin:10px 0; border-radius:6px; border:1px solid #ccc; }
+button { width:95%; padding:10px; margin-top:10px; border:none; border-radius:6px; background:#ffcc00; cursor:pointer; font-weight:600; }
+.option-btn { width:45%; display:inline-block; margin:5px; background:#1e1e2f; color:#fff; }
+</style>
+</head>
+<body>
+
+<div class="login-container">
+  <h2>Welcome to PKP MOTOR10</h2>
+  
+  <!-- User Login -->
+  <input type="text" id="userName" placeholder="Username">
+  <input type="password" id="userPass" placeholder="Password">
+  <button id="userLoginBtn">User Login</button>
+  <button id="createAccountBtn" class="option-btn">Create Account</button>
+  <hr>
+  <!-- Admin Login -->
+  <input type="text" id="adminName" placeholder="Admin Username">
+  <input type="password" id="adminPass" placeholder="Admin Password">
+  <button id="adminLoginBtn">Admin Login</button>
+</div>
+
+<script>
+// ===== User Login =====
+document.getElementById('userLoginBtn').addEventListener('click', function(){
+  const storedUser = JSON.parse(localStorage.getItem('userData'));
+  const username = document.getElementById('userName').value;
+  const password = document.getElementById('userPass').value;
+
+  if(storedUser && username === storedUser.username && password === storedUser.password){
+    localStorage.setItem('loggedIn','true');
+    localStorage.setItem('role','user');
+
+    const returnUrl = localStorage.getItem('returnUrl') || 'index.html';
+    localStorage.removeItem('returnUrl');
+    window.location.href = returnUrl;
+  } else {
+    alert('Invalid user credentials or no account exists!');
+  }
+});
+
+// ===== Create Account =====
+document.getElementById('createAccountBtn').addEventListener('click', function(){
+  window.location.href='signup.html';
+});
+
+// ===== Admin Login =====
+document.getElementById('adminLoginBtn').addEventListener('click', function(){
+  const adminUser = document.getElementById('adminName').value;
+  const adminPass = document.getElementById('adminPass').value;
+
+  if(adminUser === 'admin' && adminPass === 'admin123'){
+    localStorage.setItem('role','admin');
+    localStorage.setItem('loggedIn','true');
+    window.location.href='admin.html';
+  } else {
+    alert('Invalid admin credentials!');
+  }
+});
+</script>
+
+</body>
+</html>

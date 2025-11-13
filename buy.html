@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PKP MOTOR10 | Buy Bikes & Scooties</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .brands { padding: 60px 10%; text-align: center; }
+    .brands h2 { font-size: 2rem; margin-bottom: 40px; color: #1e1e2f; font-weight: 700; }
+    .brand-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 30px; justify-items: center; align-items: center; }
+    .brand-card { background:#fff; padding:20px 15px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s; width:180px; cursor:pointer; text-align:center; }
+    .brand-card:hover { transform: translateY(-6px); box-shadow:0 6px 16px rgba(0,0,0,0.15); }
+    .brand-card img { width:80px; height:80px; object-fit:contain; margin-bottom:10px; }
+    .brand-card p { font-weight:600; color:#1e1e2f; }
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo"><span class="pkp">PKP</span><span class="motors">MOTORS</span><span class="ten">10</span></div>
+
+  <!-- ===== DYNAMIC NAVBAR ===== -->
+  <nav id="navbar"></nav>
+</header>
+
+<section class="brands">
+  <h2>Available Brands</h2>
+  <div class="brand-grid">
+    <div class="brand-card" onclick="goToBrand('honda')">
+      <img src="C:\Users\krish\pkp10motors\logo photo\honda.avif" alt="Honda">
+      <p>Honda</p>
+    </div>
+    <div class="brand-card" onclick="goToBrand('yamaha')">
+      <img src="C:\Users\krish\pkp10motors\logo photo\yamaha.avif" alt="Yamaha">
+      <p>Yamaha</p>
+    </div>
+    <div class="brand-card" onclick="goToBrand('suzuki')">
+      <img src="C:\Users\krish\pkp10motors\logo photo\suzuki.avif" alt="Suzuki">
+      <p>Suzuki</p>
+    </div>
+    <div class="brand-card" onclick="goToBrand('hero')">
+      <img src="C:\Users\krish\pkp10motors\logo photo\hero.avif" alt="Hero">
+      <p>Hero</p>
+    </div>
+    <div class="brand-card" onclick="goToBrand('tvs')">
+      <img src="C:\Users\krish\pkp10motors\logo photo\tvs.avif" alt="TVS">
+      <p>TVS</p>
+    </div>
+    <div class="brand-card" onclick="goToBrand('bajaj')">
+      <img src="C:\Users\krish\pkp10motors\logo photo\bajaj.avif" alt="Bajaj">
+      <p>Bajaj</p>
+    </div>
+  </div>
+</section>
+
+<script>
+function goToBrand(brand) {
+  window.location.href = `brand.html?brand=${brand}`;
+}
+</script>
+
+<!-- 🏍️ BIKES LISTING -->
+<section class="latest">
+  <h2>All Available Bikes</h2>
+  <div class="bike-grid">
+    <div class="bike-card">
+      <img src="https://cdn.pixabay.com/photo/2018/03/14/09/08/motorcycle-3223103_1280.jpg" alt="Royal Enfield Classic 350">
+      <h3>Royal Enfield Classic 350</h3>
+      <p>₹95,000 | Agartala</p>
+      <a href="#" class="btn">Buy Now</a>
+    </div>
+    <div class="bike-card">
+      <img src="https://cdn.pixabay.com/photo/2018/04/04/15/59/motorcycle-3296061_1280.jpg" alt="Honda Activa 6G">
+      <h3>Honda Activa 6G</h3>
+      <p>₹60,000 | Udaipur</p>
+      <a href="#" class="btn">Buy Now</a>
+    </div>
+    <div class="bike-card">
+      <img src="https://cdn.pixabay.com/photo/2018/06/12/08/17/motorbike-3474809_1280.jpg" alt="Suzuki Gixxer">
+      <h3>Suzuki Gixxer</h3>
+      <p>₹70,000 | Dharmanagar</p>
+      <a href="#" class="btn disabled">Out of Stock</a>
+    </div>
+  </div>
+</section>
+
+<!-- ⚙️ FOOTER -->
+<footer>
+  <p>© 2025 PKP MOTOR10 — All Rights Reserved.</p>
+  <p>Made with ❤️ by <strong>Krishan Tripura</strong></p>
+</footer>
+
+<!-- ===== DYNAMIC NAVBAR SCRIPT ===== -->
+<script>
+const navbar = document.getElementById('navbar');
+const loggedIn = localStorage.getItem('loggedIn');
+const role = localStorage.getItem('role');
+
+function createLink(text, href) {
+  const a = document.createElement('a');
+  a.href = href;
+  a.textContent = text;
+  return a;
+}
+
+navbar.innerHTML = '';
+
+if(loggedIn && role==='user'){
+  navbar.appendChild(createLink('Home','index.html'));
+  navbar.appendChild(createLink('Buy','buy.html'));
+  navbar.appendChild(createLink('Sell','sell.html'));
+  navbar.appendChild(createLink('Profile','profile.html')); // just Profile, no name
+
+  const logout = createLink('Logout','#');
+  logout.addEventListener('click', ()=>{
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('role');
+    alert('Logged out!');
+    window.location.href='index.html';
+  });
+  navbar.appendChild(logout);
+
+} else if(loggedIn && role==='admin'){
+  navbar.appendChild(createLink('Admin Dashboard','admin.html'));
+  const logout = createLink('Logout','#');
+  logout.addEventListener('click', ()=>{
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('role');
+    alert('Logged out!');
+    window.location.href='login.html';
+  });
+  navbar.appendChild(logout);
+
+} else {
+  navbar.appendChild(createLink('Home','index.html'));
+  navbar.appendChild(createLink('Buy','buy.html'));
+  navbar.appendChild(createLink('Sell','sell.html'));
+  navbar.appendChild(createLink('Login','login.html'));
+}
+</script>
+
+</body>
+</html>

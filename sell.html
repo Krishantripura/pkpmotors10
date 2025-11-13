@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sell Your Bike/Scooty | PKP MOTOR10</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body { font-family:'Poppins',sans-serif; background:#f9f9f9; padding:0; margin:0; }
+header { display:flex; justify-content:space-between; align-items:center; padding:15px 10%; background:#1e1e2f; color:#fff; }
+header a { color:#fff; text-decoration:none; margin-left:20px; font-weight:600; }
+h2 { text-align:center; margin-top:40px; color:#1e1e2f; }
+form { max-width:500px; margin:40px auto; background:#fff; padding:30px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+form input, form select { width:100%; padding:10px; margin-bottom:15px; border-radius:6px; border:1px solid #ccc; }
+form button { width:100%; padding:10px; background:#ffcc00; border:none; border-radius:6px; font-weight:600; cursor:pointer; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><span class="pkp">PKP</span><span class="motors">MOTORS</span><span class="ten">10</span></div>
+  
+  <!-- ===== DYNAMIC NAVBAR ===== -->
+  <nav id="navbar"></nav>
+</header>
+
+<h2>Sell Your Bike / Scooty</h2>
+
+<form id="sellForm">
+  <input type="text" id="ownerName" placeholder="Your Name" required>
+  <input type="email" id="email" placeholder="Your Email" required>
+  <input type="text" id="phone" placeholder="Your Phone Number" required>
+  <input type="text" id="bikeName" placeholder="Bike/Scooty Name" required>
+  <input type="text" id="price" placeholder="Expected Price" required>
+  <select id="location" required>
+    <option value="">Select City</option>
+    <option value="Agartala">Agartala</option>
+    <option value="Belonia">Belonia</option>
+    <option value="Udaipur">Udaipur</option>
+    <option value="Dharmanagar">Dharmanagar</option>
+  </select>
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+// ===== DYNAMIC NAVBAR =====
+const navbar = document.getElementById('navbar');
+const loggedIn = localStorage.getItem('loggedIn');
+const role = localStorage.getItem('role');
+
+function createLink(text, href) {
+  const a = document.createElement('a');
+  a.href = href;
+  a.textContent = text;
+  return a;
+}
+
+navbar.innerHTML = '';
+
+if(loggedIn && role==='user'){
+  navbar.appendChild(createLink('Home','index.html'));
+  navbar.appendChild(createLink('Buy','buy.html'));
+  navbar.appendChild(createLink('Sell','sell.html'));
+  navbar.appendChild(createLink('Profile','profile.html')); // just Profile, no name
+
+  const logout = createLink('Logout','#');
+  logout.addEventListener('click', ()=>{
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('role');
+    alert('Logged out!');
+    window.location.href='index.html';
+  });
+  navbar.appendChild(logout);
+
+} else if(loggedIn && role==='admin'){
+  navbar.appendChild(createLink('Admin Dashboard','admin.html'));
+  const logout = createLink('Logout','#');
+  logout.addEventListener('click', ()=>{
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('role');
+    alert('Logged out!');
+    window.location.href='login.html';
+  });
+  navbar.appendChild(logout);
+
+} else {
+  navbar.appendChild(createLink('Home','index.html'));
+  navbar.appendChild(createLink('Buy','buy.html'));
+  navbar.appendChild(createLink('Sell','sell.html'));
+  navbar.appendChild(createLink('Login','login.html'));
+}
+
+// ===== SELL FORM SUBMISSION =====
+const sellForm = document.getElementById('sellForm');
+
+sellForm.addEventListener('submit', function(e){
+  e.preventDefault();
+
+  if(!localStorage.getItem('loggedIn') || localStorage.getItem('role') !== 'user'){
+    localStorage.setItem('returnUrl', 'sell.html');
+    alert('Please login first!');
+    window.location.href = 'login.html';
+    return;
+  }
+
+  const sellItem = {
+    username: document.getElementById('ownerName').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    model: document.getElementById('bikeName').value,
+    price: document.getElementById('price').value,
+    location: document.getElementById('location').value
+  };
+
+  const sellDetails = JSON.parse(localStorage.getItem('sellDetails') || '[]');
+  sellDetails.push(sellItem);
+  localStorage.setItem('sellDetails', JSON.stringify(sellDetails));
+
+  alert('Your sell request is submitted successfully!');
+  sellForm.reset();
+});
+</script>
+
+</body>
+</html>
